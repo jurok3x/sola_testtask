@@ -25,7 +25,8 @@ public class PowerStationRequestValidator implements ConstraintValidator<PowerSt
             return true;
         }
 
-        boolean isPublic = value.getIsPublic();
+        boolean isPublic = Boolean.TRUE.equals(value.getIsPublic());
+
         if (isPublic) {
             for (String field : conditionallyMandatoryFields) {
                 if (isEmpty(getFieldValue(value, field))) {
