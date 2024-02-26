@@ -25,7 +25,7 @@ public class PowerStation {
     @Column(name = "coordinates")
     private String coordinates;
 
-    @Column(name = "is_public", columnDefinition = "BOOLEAN DEFAULT false")
+    @Column(name = "is_public")
     private Boolean isPublic;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
