@@ -9,7 +9,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-@PowerStationValidator
+@PowerStationValidator(conditionallyMandatoryFields = {"title", "description", "address", "coordinates"})
 public class PowerStationRequestDTO {
     private String title;
 
