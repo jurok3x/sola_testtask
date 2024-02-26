@@ -11,6 +11,7 @@ import java.util.UUID;
 @Table(name = "power_stations")
 public class PowerStation {
     @Id
+    @Column(name = "id",unique=true, nullable = false)
     private UUID id;
 
     @Column(name = "title")
@@ -28,7 +29,6 @@ public class PowerStation {
     @Column(name = "is_public")
     private Boolean isPublic;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "connector_id")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "powerStation")
     private List<Connector> connectors;
 }
