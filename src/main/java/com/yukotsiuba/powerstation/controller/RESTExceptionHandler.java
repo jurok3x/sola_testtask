@@ -1,42 +1,30 @@
 package com.yukotsiuba.powerstation.controller;
 
 import com.yukotsiuba.powerstation.exception.APIException;
-import jakarta.validation.ConstraintViolationException;
-import org.springframework.http.HttpHeaders;
+import com.yukotsiuba.powerstation.exception.PowerStationRequestException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @ControllerAdvice
-public class RESTExceptionHandler extends ResponseEntityExceptionHandler {
+public class RESTExceptionHandler {
 
-    @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<?> handleConstraintViolationExceptionException(ConstraintViolationException ex) {
-        List<String> details = new ArrayList<>();
-        ex.getConstraintViolations().forEach(
-                violation -> details.add(violation.getMessage())
-        );
+    @ExceptionHandler(PowerStationRequestException.class)
+    public ResponseEntity<?> handleValidationExceptions(PowerStationRequestException ex) {
+        List<String> errors = ex.getErrors()
+                .stream()
+                .map(ObjectError::getDefaultMessage)
+                .collect(Collectors.toList());
 
-        APIException apiException = new APIException("Constraint Violations.", HttpStatus.BAD_REQUEST,
-                LocalDateTime.now(), details);
-        return new ResponseEntity<>(apiException, apiException.getHttpStatus());
-    }
+        APIException apiException = new APIException("Validation Errors.", HttpStatus.BAD_REQUEST,
+                LocalDateTime.now(), errors);
 
-    @Override
-    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-        List<String> details = new ArrayList<>();
-        details.add(ex.getMessage());
-        APIException apiException = new APIException("Failed to read request.", HttpStatus.BAD_REQUEST,
-                LocalDateTime.now(), details);
         return new ResponseEntity<>(apiException, apiException.getHttpStatus());
     }
 }
