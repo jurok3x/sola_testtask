@@ -28,7 +28,6 @@ public class PowerStationRequestValidator implements ConstraintValidator<PowerSt
         boolean isPublic = Boolean.TRUE.equals(value.getIsPublic());
 
         if (isPublic) {
-            StringBuilder violations = new StringBuilder();
             for (String field : conditionallyMandatoryFields) {
                 if (isEmpty(getFieldValue(value, field))) {
                     addConstraintViolation(context, capitalize(field) + " is mandatory when 'isPublic' is true.", field);
