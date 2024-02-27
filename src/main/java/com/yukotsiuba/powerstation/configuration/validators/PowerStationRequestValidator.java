@@ -1,6 +1,6 @@
 package com.yukotsiuba.powerstation.configuration.validators;
 
-import com.yukotsiuba.powerstation.dto.PowerStationRequestDTO;
+import com.yukotsiuba.powerstation.entity.PowerStation;
 import com.yukotsiuba.powerstation.entity.annotations.PowerStationValidator;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
@@ -10,7 +10,7 @@ import java.lang.reflect.Field;
 import static com.yukotsiuba.powerstation.utils.ValidationUtils.capitalize;
 import static com.yukotsiuba.powerstation.utils.ValidationUtils.isEmpty;
 
-public class PowerStationRequestValidator implements ConstraintValidator<PowerStationValidator, PowerStationRequestDTO> {
+public class PowerStationRequestValidator implements ConstraintValidator<PowerStationValidator, PowerStation> {
 
     private String[] conditionallyMandatoryFields;
 
@@ -20,7 +20,7 @@ public class PowerStationRequestValidator implements ConstraintValidator<PowerSt
     }
 
     @Override
-    public boolean isValid(PowerStationRequestDTO value, ConstraintValidatorContext context) {
+    public boolean isValid(PowerStation value, ConstraintValidatorContext context) {
         if (value == null) {
             return true;
         }
@@ -28,22 +28,22 @@ public class PowerStationRequestValidator implements ConstraintValidator<PowerSt
         boolean isPublic = Boolean.TRUE.equals(value.getIsPublic());
 
         if (isPublic) {
+            StringBuilder violations = new StringBuilder();
             for (String field : conditionallyMandatoryFields) {
                 if (isEmpty(getFieldValue(value, field))) {
-                    addConstraintViolation(context, capitalize(field) + " is mandatory when 'isPublic' is true", field);
+                    addConstraintViolation(context, capitalize(field) + " is mandatory when 'isPublic' is true.", field);
                     return false;
                 }
             }
         }
-
         return true;
     }
 
-    private Object getFieldValue(PowerStationRequestDTO dto, String fieldName) {
+    private Object getFieldValue(PowerStation station, String fieldName) {
         try {
-            Field field = PowerStationRequestDTO.class.getDeclaredField(fieldName);
+            Field field = PowerStation.class.getDeclaredField(fieldName);
             field.setAccessible(true);
-            return field.get(dto);
+            return field.get(station);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException("Error accessing field: " + fieldName, e);
         }
