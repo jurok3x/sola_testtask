@@ -1,4 +1,3 @@
-DROP TABLE IF EXISTS power_stations;
 CREATE TABLE power_stations (
     id UUID PRIMARY KEY,
     is_public BOOLEAN,

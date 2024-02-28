@@ -14,6 +14,7 @@ public class TestDBConfig {
     public DataSource testDataSource() {
         final DataSource dataSource = new EmbeddedDatabaseBuilder()
                 .setType(EmbeddedDatabaseType.H2)
+                .addScript("classpath:/db/drop_tables.sql")
                 .addScript("classpath:/db/power-stations/schema.sql")
                 .addScript("classpath:/db/connectors/schema.sql")
                 .addScript("classpath:/db/connectors/alter_table.sql")

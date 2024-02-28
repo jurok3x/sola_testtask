@@ -1,4 +1,3 @@
-DROP TABLE IF EXISTS connectors;
 CREATE TABLE connectors (
     id UUID PRIMARY KEY,
     type VARCHAR(10),
