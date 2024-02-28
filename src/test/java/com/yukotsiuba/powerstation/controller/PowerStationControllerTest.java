@@ -30,6 +30,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class PowerStationControllerTest {
 
+    private static final String TITLE_FIELD_ERROR = "Title field is mandatory for public stations.";
+    private static final String DESCRIPTION_FIELD_IS_MANDATORY_ERROR = "Description field is mandatory for public stations.";
+    private static final String ADDRESS_FIELD_ERROR = "Address field is mandatory for public stations.";
+    private static final String COORDINATES_FIELD_ERROR = "Coordinates field is mandatory for public stations.";
+    private static final String IS_PUBLIC_ERROR = "Please specify station's publicity.";
+    private static final String CONNECTORS_FIELD_ERROR = "Connectors field is mandatory.";
+    private static final String INVALID_MAXIMUM_POWER_ERROR = "Invalid maximum power value.";
+    private static final String INVALID_ENUM_VALUE = "Invalid enum value.";
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -68,10 +77,10 @@ class PowerStationControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string(containsString("Title field is mandatory for public stations.")))
-                .andExpect(content().string(containsString("Description field is mandatory for public stations.")))
-                .andExpect(content().string(containsString("Address field is mandatory for public stations.")))
-                .andExpect(content().string(containsString("Coordinates field is mandatory for public stations.")));
+                .andExpect(content().string(containsString(TITLE_FIELD_ERROR)))
+                .andExpect(content().string(containsString(DESCRIPTION_FIELD_IS_MANDATORY_ERROR)))
+                .andExpect(content().string(containsString(ADDRESS_FIELD_ERROR)))
+                .andExpect(content().string(containsString(COORDINATES_FIELD_ERROR)));
 
         verifyNoInteractions(service);
     }
@@ -103,8 +112,8 @@ class PowerStationControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string(containsString("Please specify station's publicity.")))
-                .andExpect(content().string(containsString("Connectors field is mandatory.")));
+                .andExpect(content().string(containsString(IS_PUBLIC_ERROR)))
+                .andExpect(content().string(containsString(CONNECTORS_FIELD_ERROR)));
 
         verifyNoInteractions(service);
     }
@@ -120,9 +129,9 @@ class PowerStationControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string(containsString("Title field is mandatory for public stations.")))
-                .andExpect(content().string(containsString("Invalid maximum power value.")))
-                .andExpect(content().string(containsString("Invalid enum value.")));
+                .andExpect(content().string(containsString(TITLE_FIELD_ERROR)))
+                .andExpect(content().string(containsString(INVALID_MAXIMUM_POWER_ERROR)))
+                .andExpect(content().string(containsString(INVALID_ENUM_VALUE)));
 
         verifyNoInteractions(service);
     }
