@@ -56,7 +56,7 @@ public class PowerStationRequestValidator implements ConstraintValidator<PowerSt
 
     private void addConstraintViolations(ConstraintValidatorContext context, List<String> errorFields) {
         for(String field: errorFields) {
-            String message = String.format("%s is mandatory for public stations.", capitalize(field));
+            String message = String.format("%s field is mandatory for public stations.", capitalize(field));
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate(message)
                     .addPropertyNode(field)
