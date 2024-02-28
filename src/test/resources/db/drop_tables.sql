@@ -1,0 +1,5 @@
+ALTER TABLE IF EXISTS connectors
+DROP CONSTRAINT IF EXISTS fk_power_station;
+
+DROP TABLE IF EXISTS connectors;
+DROP TABLE IF EXISTS power_stations;
