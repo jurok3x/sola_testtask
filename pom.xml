@@ -62,6 +62,15 @@
 				</filters>
 			</build>
 		</profile>
+		<profile>
+			<id>prod</id>
+			<build>
+				<finalName>client-prod</finalName>
+				<filters>
+					<filter>src/main/resources/application-prod.properties</filter>
+				</filters>
+			</build>
+		</profile>
 	</profiles>
 
 	<build>
